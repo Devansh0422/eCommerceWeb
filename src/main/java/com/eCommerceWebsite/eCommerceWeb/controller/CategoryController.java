@@ -1,5 +1,6 @@
 package com.eCommerceWebsite.eCommerceWeb.controller;
 
+import com.eCommerceWebsite.eCommerceWeb.config.AppConstant;
 import com.eCommerceWebsite.eCommerceWeb.model.Category;
 import com.eCommerceWebsite.eCommerceWeb.payload.CategoryDTO;
 import com.eCommerceWebsite.eCommerceWeb.payload.CategoryResponse;
@@ -21,8 +22,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/public/categories")
-    public ResponseEntity<CategoryResponse> getAllCategories() {
-        return new ResponseEntity<>(categoryService.getAllCategories(),HttpStatus.OK);
+    public ResponseEntity<CategoryResponse> getAllCategories(@RequestParam(name = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER) Integer pageNumber,
+                                                             @RequestParam(name = "pageSize", defaultValue = AppConstant.PAGE_SIZE) Integer pageSize,
+                                                             @RequestParam(name = "sortBy", defaultValue = AppConstant.SORT_CATEGORIES_BY) String sortBy,
+                                                             @RequestParam (name = "sortOrder", defaultValue = AppConstant.SORT_DIR) String sortOrder) {
+
+        return new ResponseEntity<>(categoryService.getAllCategories(pageNumber,pageSize,sortBy,sortOrder),HttpStatus.OK);
+
     }
 
     @PostMapping("/public/categories")
@@ -34,17 +40,17 @@ public class CategoryController {
     @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
         try{
-            return  new ResponseEntity<>(categoryService.deleteCategory(categoryId),HttpStatus.OK);
+            return  new ResponseEntity<>("Category with id " +categoryId+" deleted Successfully " +categoryService.deleteCategory(categoryId),HttpStatus.OK);
         }catch (ResponseStatusException e){
             return new ResponseEntity<>(e.getReason(),e.getStatusCode());
         }
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId) {
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
         try{
-            Category savedCategory = categoryService.updateCategory(category, categoryId);
-            return new ResponseEntity<>("Category with id " +categoryId+" update Successfully "+category,HttpStatus.CREATED);
+            CategoryDTO savedCategory = categoryService.updateCategory(categoryDTO, categoryId);
+            return new ResponseEntity<>("Category with id " +categoryId+" update Successfully "+savedCategory,HttpStatus.CREATED);
         }catch (ResponseStatusException e){
             return new ResponseEntity<>(e.getReason(),e.getStatusCode());
         }

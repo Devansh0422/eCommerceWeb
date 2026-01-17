@@ -1,12 +1,14 @@
 package com.eCommerceWebsite.eCommerceWeb.repositories;
 
 import com.eCommerceWebsite.eCommerceWeb.model.Category;
+import com.eCommerceWebsite.eCommerceWeb.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Category findByCategoryName(String categoryName);
+    List<Product> findByCategoryOrderByPriceAsc(Category category);
 }

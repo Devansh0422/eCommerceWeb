@@ -1,4 +1,4 @@
-package com.eCommerceWebsite.eCommerceWeb;
+package com.eCommerceWebsite.eCommerceWeb.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
