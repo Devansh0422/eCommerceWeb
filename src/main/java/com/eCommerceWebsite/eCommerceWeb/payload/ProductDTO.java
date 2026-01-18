@@ -14,7 +14,7 @@ public class ProductDTO {
     private String image;
     private double price;
     private Integer quantity;
-    private double discount;
-    private  double specialPrice;
+    private Double discount;
+    private  Double specialPrice;
 
 }
