@@ -27,10 +27,7 @@ public class JwtUtils {
     @Value("${spring.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${spring.app.jwtExpirationMs}")
-    private int jwtExpirationInMs;
-
-    @Value("${spring.app.jwtSecret}")
+    @Value("${spring.app.jwtCookieName}")
     private String jwtCookie;
 
 
@@ -52,7 +49,7 @@ public class JwtUtils {
     }
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal){
-        String jwtToken = getUserNameFromJwtToken(userPrincipal.getUsername());
+        String jwtToken = generateTokenFromUsername(userPrincipal.getUsername());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie,jwtToken).path("/api").maxAge(10*24*60*60).httpOnly(false).build();
         return cookie ;
     }
