@@ -11,6 +11,7 @@ import com.eCommerceWebsite.eCommerceWeb.payload.ProductResponse;
 import com.eCommerceWebsite.eCommerceWeb.repositories.CartRepository;
 import com.eCommerceWebsite.eCommerceWeb.repositories.CategoryRepository;
 import com.eCommerceWebsite.eCommerceWeb.repositories.ProductRepository;
+import com.eCommerceWebsite.eCommerceWeb.util.AuthUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,17 +50,26 @@ public class ProductServiceImpl implements ProductService {
     @Value("${project.image}")
     private String path;
 
+ //   @Autowired
+  //  AuthUtil authUtil;
+
     @Override
     public ProductDTO addProduct(Long categoryId,  ProductDTO productDto) {
         Product product = modelMapper.map(productDto,Product.class);
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category","categoryId",categoryId));
 
+//        String currentUserId =  authUtil.loggedInEmail();
         boolean isProductNotPresent = true;
         List<Product> products = category.getProducts();
         for (Product p : products) {
-            if(p.getProductName().equals(productDto.getProductName())) {
-                isProductNotPresent = false;
+            if(p.getProductName().equals(productDto.getProductName())  ) {
+
+                // if want multiple product of same name but from different seller
+
+//                if(p.getProductName().equals(productDto.getProductName()) &&
+//                        p.getUser().getEmail().equals(currentUserId) ){
+                    isProductNotPresent = false;
                 break;
             }
         }
